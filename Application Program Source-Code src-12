@@ -1,4 +1,4 @@
-hi// main.cpp
+// main.cpp
 
 #include <QApplication>
 #include <QWidget>
