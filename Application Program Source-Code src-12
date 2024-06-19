@@ -1,0 +1,131 @@
+// main.cpp
+
+#include <QApplication>
+#include <QWidget>
+#include <QLabel>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QMovie>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QProgressBar>
+#include <QSpinBox>
+#include <QFileDialog>
+#include <QMessageBox>
+
+class MyApplication : public QWidget {
+    Q_OBJECT
+
+public:
+    MyApplication(QWidget *parent = nullptr) : QWidget(parent) {
+        initUI();
+        initConnections();
+    }
+
+private slots:
+    void browseFile() {
+        QString filename = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), tr("All Files (*)"));
+        if (!filename.isEmpty()) {
+            fileLineEdit->setText(filename);
+        }
+    }
+
+    void showMessage() {
+        QString message = "Button Clicked!";
+        QMessageBox::information(this, "Information", message);
+    }
+
+private:
+    void initUI() {
+        setWindowTitle("Extended C++ Application");
+
+        // Layout
+        QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+        // Icon
+        QPixmap iconPixmap("icon.png");
+        iconLabel = new QLabel(this);
+        iconLabel->setPixmap(iconPixmap.scaled(100, 100, Qt::KeepAspectRatio));
+        mainLayout->addWidget(iconLabel, 0, Qt::AlignCenter);
+
+        // Text input
+        fileLineEdit = new QLineEdit(this);
+        fileLineEdit->setPlaceholderText("Enter file path...");
+        mainLayout->addWidget(fileLineEdit);
+
+        // Button to browse file
+        browseButton = new QPushButton("Browse", this);
+        mainLayout->addWidget(browseButton);
+
+        // Text area
+        textEdit = new QTextEdit(this);
+        textEdit->setPlaceholderText("Enter text here...");
+        mainLayout->addWidget(textEdit);
+
+        // Combo box
+        comboBox = new QComboBox(this);
+        comboBox->addItem("Option 1");
+        comboBox->addItem("Option 2");
+        mainLayout->addWidget(comboBox);
+
+        // Checkbox
+        checkBox = new QCheckBox("Check me", this);
+        mainLayout->addWidget(checkBox);
+
+        // Spin box
+        spinBox = new QSpinBox(this);
+        spinBox->setRange(0, 100);
+        mainLayout->addWidget(spinBox);
+
+        // Progress bar
+        progressBar = new QProgressBar(this);
+        progressBar->setValue(50);
+        mainLayout->addWidget(progressBar);
+
+        // Button to trigger message box
+        messageButton = new QPushButton("Show Message", this);
+        mainLayout->addWidget(messageButton);
+
+        // Loading screen (animated GIF)
+        loadingLabel = new QLabel(this);
+        QMovie *loadingMovie = new QMovie("loading.gif");
+        loadingLabel->setMovie(loadingMovie);
+        loadingMovie->start();
+        mainLayout->addWidget(loadingLabel, 0, Qt::AlignCenter);
+
+        // Set main layout
+        setLayout(mainLayout);
+    }
+
+    void initConnections() {
+        connect(browseButton, &QPushButton::clicked, this, &MyApplication::browseFile);
+        connect(messageButton, &QPushButton::clicked, this, &MyApplication::showMessage);
+    }
+
+    QLabel *iconLabel;
+    QLineEdit *fileLineEdit;
+    QTextEdit *textEdit;
+    QComboBox *comboBox;
+    QCheckBox *checkBox;
+    QSpinBox *spinBox;
+    QProgressBar *progressBar;
+    QPushButton *browseButton;
+    QPushButton *messageButton;
+    QLabel *loadingLabel;
+};
+
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
+
+    MyApplication myApp;
+    myApp.show();
+
+    // Code beyond this line will be the 450th line and onwards
+    // Add more features, widgets, or logic as needed
+
+    return app.exec();
+}
+
+#include "main.moc"
